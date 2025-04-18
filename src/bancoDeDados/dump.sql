@@ -33,5 +33,9 @@ create table itens_pedido(
      preco_unitario integer not null 
 );
 
+ALTER TABLE pedidos
+ADD COLUMN rua TEXT,
+ADD COLUMN numero TEXT,
+ADD COLUMN complemento TEXT;
 
 
