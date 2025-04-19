@@ -1,4 +1,5 @@
 const knex = require('../../bancoDeDados/config');
+const enviarNotificacaoPedido = require('../whatsapp/enviarNotificacaoPedido');
 
 const criarPedido = async (req, res) => {
     const { cep, rua, numero, complemento, itens, mensagem_whatsapp } = req.body;
@@ -48,7 +49,11 @@ const criarPedido = async (req, res) => {
                 quant_estoque: novaQuantidadeEmEstoque,
                 disponivel: novaQuantidadeEmEstoque <= 0 ? false : true
             });
-        }
+        };
+
+        setImmediate(async () => {
+            await enviarNotificacaoPedido(pedidoId)
+        })
 
         return res.status(201).json(pedidoCriado);
     } catch (error) {
