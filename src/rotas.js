@@ -7,6 +7,7 @@ const validarRequisicao = require('./intermediadores/validarRequisicao')
 const schemaAdmin = require('./schemas/schemaAdmin')
 const schemaLogin = require('./schemas/schemaLogin');
 const schemaPedido = require('./schemas/schemaPedido');
+const autenticacao = require('./intermediadores/autenticacao');
 const rotas = express();
 
 
@@ -18,4 +19,7 @@ rotas.post('/usuario', validarRequisicao(schemaAdmin), cadastrarAdmin);
 rotas.post('/login', validarRequisicao(schemaLogin), login);
 rotas.get('/sabores', listarSabores);
 rotas.post('/pedido', validarRequisicao(schemaPedido), criarPedido)
+
+rotas.use(autenticacao);
+
 module.exports = rotas;
