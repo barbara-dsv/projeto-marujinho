@@ -1,5 +1,4 @@
 const knex = require('../../bancoDeDados/config');
-const enviarNotificacaoPedido = require('../whatsapp/enviarNotificacaoPedido');
 
 const criarPedido = async (req, res) => {
     const { cep, rua, numero, complemento, itens, mensagem_whatsapp } = req.body;
@@ -8,18 +7,24 @@ const criarPedido = async (req, res) => {
         let valorTotal = 0;
         let pedidosCriado = [];
         for (item of itens) {
-            const saborDisponivel = await knex('sabores').where({ id: item.sabor_id }).andWhere({ disponivel: true }).first();
+            const sabor = await knex('sabores').where({ id: item.sabor_id }).first();
+            console.log(sabor)
+            if (!sabor) {
+                return res.status(404).json({ mensagem: `Sabor com ID ${item.sabor_id} não encontrado.` });
+            }
 
-            if (!saborDisponivel) {
-                return res.status(403).json({ mensagem: "Sabor não disponível" });
-            };
-            if (item.quantidade > saborDisponivel.quant_estoque) {
+            if (!sabor.disponivel || sabor.quant_estoque === 0) {
+                return res.status(403).json({ mensagem: `O sabor "${sabor.nome}" está indisponível no momento.` });
+            }
+
+            if (item.quantidade > sabor.quant_estoque) {
                 return res.status(400).json({
-                    mensagem: `Estoque insuficiente para o sabor ${saborDisponivel.nome}. Disponível: ${saborDisponivel.quant_estoque}, solicitado: ${item.quantidade}`
+                    mensagem: `Quantidade solicitada para "${sabor.nome}" é maior que o disponível. Disponível: ${sabor.quant_estoque}, solicitado: ${item.quantidade}.`
                 });
             }
-            item.preco_unitario = saborDisponivel.preco;
-            valorTotal += saborDisponivel.preco * item.quantidade
+
+            item.preco_unitario = sabor.preco;
+            valorTotal += sabor.preco * item.quantidade
             pedidosCriado.push(item)
         }
 
@@ -51,9 +56,6 @@ const criarPedido = async (req, res) => {
             });
         };
 
-        setImmediate(async () => {
-            await enviarNotificacaoPedido(pedidoId)
-        })
 
         return res.status(201).json(pedidoCriado);
     } catch (error) {
