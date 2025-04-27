@@ -1,6 +1,7 @@
 const knex = require('../../bancoDeDados/config');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+require('dotenv').config();
 
 const login = async (req, res) => {
     const { email, senha } = req.body;
@@ -20,8 +21,7 @@ const login = async (req, res) => {
             return res.status(400).json({ mensagem: 'Usuário e/ou senha inválido(s).' })
         };
 
-        const token = jwt.sign({ id: usuario.id }, process.env.HASH, { expiresIn: '9h' });
-
+        const token = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET, { expiresIn: '9h' });
         const { senha: _, ...dadosUsuario } = usuario;
 
         return res.status(200).json({ usuario: dadosUsuario, token });
