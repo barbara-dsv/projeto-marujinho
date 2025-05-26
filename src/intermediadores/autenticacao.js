@@ -13,12 +13,12 @@ const autenticacao = async (req, res, next) => {
         const { id } = jwt.verify(token, process.env.JWT_SECRET)
         console.log(process.env.JWT_SECRET)
 
-        const admin = await knex('usuarios').where({ id }).first();
+        const adminEncontrado = await knex('usuarios').where({ id }).first();
 
-        if (!admin) return res.status(400).json({ mensagem: 'Admin não cadastrado' });
+        if (!adminEncontrado) return res.status(400).json({ mensagem: 'Admin não cadastrado' });
 
-        const { senha, ...adminEncontrado } = admin
-        req.admin = adminEncontrado
+        const { senha, ...admin } = adminEncontrado
+        req.admin = admin
         next()
 
     } catch (error) {
