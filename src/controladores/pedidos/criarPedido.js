@@ -34,7 +34,8 @@ const criarPedido = async (req, res) => {
             mensagem_whatsapp,
             rua,
             numero,
-            complemento
+            complemento,
+            status: 'Pendente'
         }).returning('*')
 
         const pedidoId = pedidoCriado.id;
