@@ -53,6 +53,13 @@ const schemaPedido = joi.object({
 			"array.min": "O pedido deve ter pelo menos um item",
 			"any.required": "O campo itens é obrigatório",
 		}),
+	numero_whatsapp: joi
+		.string()
+		.pattern(/^\d{10,11}$/)
+		.allow("", null)
+		.messages({
+			"string.pattern.base": "O número do WhatsApp deve conter entre 10 e 11 dígitos, incluindo o DDD. Ex: 85912345678",
+		}),
 });
 
 module.exports = schemaPedido;
