@@ -17,6 +17,7 @@ const schemaLogin = require("./schemas/schemaLogin");
 const schemaPedido = require("./schemas/schemaPedido");
 const schemaSabor = require("./schemas/schemaSabor");
 const schemaAtualizarSabor = require("./schemas/schemaAtualizarSabor");
+const schemaStatus = require("./schemas/schemaAlterarStatus");
 
 const autenticacao = require("./intermediadores/autenticacao");
 
@@ -43,6 +44,6 @@ rotas.put(
 rotas.get("/admin/pedidos", listarPedidos);
 rotas.get("/admin/pedido/:id", listarPedido);
 
-rotas.put('/admin/pedido/:id/status', alterarStatusDoPedido)
+rotas.put('/admin/pedido/:nome/status', validarRequisicao(schemaStatus), alterarStatusDoPedido)
 
 module.exports = rotas;
