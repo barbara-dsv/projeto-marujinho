@@ -1,7 +1,7 @@
 const knex = require("../../bancoDeDados/config");
 
 const criarPedido = async (req, res) => {
-	const { cep, rua, numero, complemento, itens, mensagem_whatsapp } = req.body;
+	const { cep, rua, numero, complemento, itens, mensagem_whatsapp, numero_whatsapp } = req.body;
 
 	try {
 		let valorTotal = 0;
@@ -43,6 +43,7 @@ const criarPedido = async (req, res) => {
 				numero,
 				complemento,
 				status: "Pendente",
+				numero_whatsapp
 			})
 			.returning("*");
 
