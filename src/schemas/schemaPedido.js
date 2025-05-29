@@ -60,6 +60,11 @@ const schemaPedido = joi.object({
 		.messages({
 			"string.pattern.base": "O número do WhatsApp deve conter entre 10 e 11 dígitos, incluindo o DDD. Ex: 85912345678",
 		}),
+	nome_cliente: joi.string().pattern(/.*\S.*/).required().messages({
+		'string.pattern.base': 'O campo nome quando preenchido não pode ser encaminhado vazio.',
+		'any.required': 'O campo nome é obrigatório',
+		'any.empty': 'O campo nome é obrigatório'
+	}),
 });
 
 module.exports = schemaPedido;
