@@ -9,6 +9,7 @@ const validarRequisicao = require("./intermediadores/validarRequisicao");
 const atualizarSabor = require("./controladores/admin/atualizarSabor");
 const listarPedidos = require("./controladores/admin/listarPedidos");
 const listarPedido = require("./controladores/admin/listarPedido");
+const alterarStatusDoPedido = require("./controladores/admin/alterarStatusdoPedido");
 
 //schemas
 const schemaAdmin = require("./schemas/schemaAdmin");
@@ -42,6 +43,6 @@ rotas.put(
 rotas.get("/admin/pedidos", listarPedidos);
 rotas.get("/admin/pedido/:id", listarPedido);
 
-//TODO:rotas.put('/admin/pedido/:id/status')*/
+rotas.put('/admin/pedido/:id/status', alterarStatusDoPedido)
 
 module.exports = rotas;
