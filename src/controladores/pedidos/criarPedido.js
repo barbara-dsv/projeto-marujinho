@@ -1,9 +1,16 @@
 const knex = require("../../bancoDeDados/config");
+const validarCep = require("../../utils/validarCep");
 
 const criarPedido = async (req, res) => {
 	const { cep, rua, numero, complemento, itens, mensagem_whatsapp, numero_whatsapp, nome_cliente } = req.body;
 
 	try {
+		const validacaoCep = await validarCep(cep)
+
+		if (!validacaoCep.valido) {
+			return res.status(400).json({ mensagem: validacaoCep.mensagem });
+		}
+
 		let valorTotal = 0;
 		let pedidosCriado = [];
 		for (item of itens) {
