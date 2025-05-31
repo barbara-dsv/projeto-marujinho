@@ -28,6 +28,6 @@ POST /admin/usuario
 Cadastro de admin.
 
 POST /admin/login
-Login do admin para acessar o painel (já existe).
+Login do admin para acessar o painel.
 
 
