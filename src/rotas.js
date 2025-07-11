@@ -21,6 +21,9 @@ const schemaStatus = require('./schemas/schemaAlterarStatus');
 
 const autenticacao = require('./intermediadores/autenticacao');
 
+const upload = require('./intermediadores/upload');
+const uploadImagem = require('./controladores/uploads/uploadImagem');
+
 const rotas = express();
 
 rotas.get('/', (req, res) => {
@@ -31,6 +34,8 @@ rotas.post('/admin/usuario', validarRequisicao(schemaAdmin), cadastrarAdmin);
 rotas.post('/admin/login', validarRequisicao(schemaLogin), login);
 rotas.get('/sabores', listarSabores);
 rotas.post('/pedido', validarRequisicao(schemaPedido), criarPedido);
+
+rotas.post('/upload', upload.single('image'), uploadImagem);
 
 rotas.use(autenticacao);
 
