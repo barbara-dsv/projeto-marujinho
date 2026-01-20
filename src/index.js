@@ -5,10 +5,9 @@ const rotas = require('./rotas');
 
 const app = express();
 app.use(cors());
-app.use(cors({
-    origin: 'http://localhost:5173'
-}));
 app.use(express.json());
 app.use(rotas);
 
-app.listen(3000);
+app.listen(3000, '0.0.0.0', () => {
+    console.log('API Marujinho rodando na porta 3000 🌊🍦');
+});
